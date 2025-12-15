@@ -1,76 +1,46 @@
-// Typing Animation
-const text="Paid Custom Rooms • Fair Play • Anti-Hack Support • CSE Data Science Student";
+// Typing animation
+const text="Paid Custom Rooms • Skill Based Earning • Fair Play • Anti-Hack Support • CSE Data Science";
 let i=0;
-const typing=document.querySelector(".typing");
-(function type(){
-if(i<text.length){
-typing.innerHTML+=text.charAt(i);
-i++;setTimeout(type,50);
-}
-})();
+setInterval(()=>{
+  document.querySelector(".typing").innerText=text.slice(0,i++);
+  if(i>text.length)i=0;
+},100);
 
-// Scroll reveal + progress
+// Reveal + scroll bar
 window.addEventListener("scroll",()=>{
-document.querySelectorAll(".reveal").forEach(el=>{
-if(el.getBoundingClientRect().top<window.innerHeight-100)
-el.classList.add("active");
-});
-document.getElementById("scroll-progress").style.width=
-(window.scrollY/(document.body.scrollHeight-innerHeight))*100+"%";
+  document.querySelectorAll(".reveal").forEach(el=>{
+    if(el.getBoundingClientRect().top < window.innerHeight-100){
+      el.classList.add("active");
+    }
+  });
+  document.getElementById("scroll-progress").style.width=
+  (window.scrollY/(document.body.scrollHeight-innerHeight))*100+"%";
 });
 
 // Counters
-document.querySelectorAll(".counter").forEach(counter=>{
-let target=+counter.dataset.target;
-let count=0;
-let inc=setInterval(()=>{
-count+=20;counter.innerText=count;
-if(count>=target){counter.innerText=target;clearInterval(inc);}
-},20);
+document.querySelectorAll(".counter").forEach(c=>{
+  let t=+c.dataset.target,n=0;
+  let int=setInterval(()=>{
+    n+=Math.ceil(t/100);
+    if(n>=t){n=t;clearInterval(int)}
+    c.innerText=n;
+  },30);
 });
 
-// Like Button (Lifetime per browser)
+// LIKE SYSTEM (LIFETIME)
 let likes=localStorage.getItem("likes")||0;
-document.getElementById("likeCount").innerText=likes;
-document.getElementById("likeBtn").onclick=()=>{
-likes++;localStorage.setItem("likes",likes);
-document.getElementById("likeCount").innerText=likes;
-};
-// Typing Animation
-const text="Paid Custom Rooms • Fair Play • Anti-Hack Support • CSE Data Science Student";
-let i=0;
-const typing=document.querySelector(".typing");
-(function type(){
-if(i<text.length){
-typing.innerHTML+=text.charAt(i);
-i++;setTimeout(type,50);
-}
-})();
+document.getElementById("likeCountFloating").innerText=likes;
+document.getElementById("statsLikeCount").innerText=likes;
 
-// Scroll reveal + progress
-window.addEventListener("scroll",()=>{
-document.querySelectorAll(".reveal").forEach(el=>{
-if(el.getBoundingClientRect().top<window.innerHeight-100)
-el.classList.add("active");
-});
-document.getElementById("scroll-progress").style.width=
-(window.scrollY/(document.body.scrollHeight-innerHeight))*100+"%";
-});
+document.getElementById("likeBtnFloating").onclick=()=>{
+  likes++;
+  localStorage.setItem("likes",likes);
+  document.getElementById("likeCountFloating").innerText=likes;
+  document.getElementById("statsLikeCount").innerText=likes;
 
-// Counters
-document.querySelectorAll(".counter").forEach(counter=>{
-let target=+counter.dataset.target;
-let count=0;
-let inc=setInterval(()=>{
-count+=20;counter.innerText=count;
-if(count>=target){counter.innerText=target;clearInterval(inc);}
-},20);
-});
-
-// Like Button (Lifetime per browser)
-let likes=localStorage.getItem("likes")||0;
-document.getElementById("likeCount").innerText=likes;
-document.getElementById("likeBtn").onclick=()=>{
-likes++;localStorage.setItem("likes",likes);
-document.getElementById("likeCount").innerText=likes;
+  let b=document.createElement("div");
+  b.className="like-bubble";
+  b.innerText="+1";
+  document.querySelector(".like-floating").appendChild(b);
+  setTimeout(()=>b.remove(),1000);
 };
